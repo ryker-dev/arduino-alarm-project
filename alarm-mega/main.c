@@ -5,7 +5,7 @@
 #include "password.h"
     
 int main(void) {
-    char input;
+    //char input;
 	
 	/* Hook URT stream to std */
     FILE uart_output = FDEV_SETUP_STREAM(USART_transmit, NULL, _FDEV_SETUP_WRITE);
@@ -19,7 +19,7 @@ int main(void) {
     
     while(1) { 
 		printf("Hello World!\n\r");
-		_delay_ms(10000);
+		_delay_ms(1000);
     }
 }
 
