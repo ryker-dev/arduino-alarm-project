@@ -7,6 +7,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include <stdio.h>
+#include <string.h>
 
 void led_test(void){
     PORTB &= ~(1 << PB0);
@@ -17,6 +18,14 @@ void led_test(void){
     _delay_ms(1000);
 }
 
+int compare(char *password, char *given_password){
+	if (strcmp(password, given_password) != 0) {
+		return 0;
+	}
+	else {
+		return 1;
+	}
+}
 
 int check_password(void)
 {
@@ -188,14 +197,5 @@ int check_password(void)
             idx +=1;              
             _delay_ms(100);
         }
-    }
-}
-
-int compare(char *password, char *given_password){
-    if (strcmp(password, given_password) != 0) {
-        // Wrong password
-    }
-    else {
-        // Correct password
     }
 }

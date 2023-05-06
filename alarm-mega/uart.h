@@ -1,5 +1,5 @@
-#define F_CPU 1000000
-#define FOSC 16000000	// Clock speed
+#define F_CPU 16000000UL
+#define FOSC 16000000UL	// Clock speed
 #define BAUD 9600
 #define UBRR FOSC/16/BAUD-1
 
