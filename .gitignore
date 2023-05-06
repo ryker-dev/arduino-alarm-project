@@ -1,2 +1,4 @@
 .*
+**/Debug
 !.gitignore
+alarm-mega
