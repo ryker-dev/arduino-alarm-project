@@ -1,4 +1,7 @@
 /*
+ * Get password typed with keypad and check if it is correct.
+ * Character # works as a 'submit password' button and * as backspace.
+ *
  * Source of inspiration:
  * https://circuitdigest.com/microcontroller-projects/keypad-interfacing-with-avr-atmega32
  */ 
@@ -9,6 +12,8 @@
 #include <stdio.h>
 #include <string.h>
 
+// Bitmasks for handling the correct pins from ports D and B
+// that the keypad is connected to (Arduino Uno digital pins 6-13)
 #define BITMASK_D 0b11000000
 #define BITMASK_B 0b00111111
 
@@ -21,12 +26,13 @@ void led_test(void){
     _delay_ms(1000);
 }
 
-int compare(char *password, char *given_password){
-	if (strcmp(password, given_password) != 0) {
-		return 0;
+// Compare user given password with the correct password
+int compare(char *password, char *given_password, size_t n){
+	if (strncmp(password, given_password, n) != 0) {
+		return 1;
 	}
 	else {
-		return 1;
+		return 0;
 	}
 }
 
@@ -44,7 +50,7 @@ int check_password(void)
     /******************************************************/
     
     char *password = "0123";
-    char *given_password = "xxxx";
+    char given_password[30];
     int idx = 0;
     
     uint8_t key_pressed = 0;
@@ -215,15 +221,10 @@ int check_password(void)
                 }
             }
             else if (key_pressed == 0b11100111) {
-                // *
-                //printf("*");
-                // TODO: make this the backspace button
-                given_password[idx] = '*';
-                if (password[idx] == '*') {
-                }
-                else {
-                    ;
-                }
+                // Backspace button (*)
+                given_password[idx - 1] = 'x';
+                idx -= 2;
+                //printf("\n\r%s\n\r", given_password);
             }
             else if (key_pressed == 0b11101011) {
                 // 0
@@ -237,8 +238,8 @@ int check_password(void)
             }
             else if (key_pressed == 0b11101101) {
                 // #
-                //printf("#");
-                compare(password, given_password);
+                int pw_validity = compare(password, given_password, idx);
+                printf("\n\rpw_validity %d\n\r", pw_validity);
             }
             else if (key_pressed == 0b11101110) {
                 // D
