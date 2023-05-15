@@ -62,11 +62,12 @@ int check_password(void)
     DDRD &= 0b00111111;
     DDRB &= 0b11111100;
     DDRB |= 0b00111100;
-    _delay_ms(1);
+    //_delay_ms(1);
     
     // Power the row pins
     PORTD |= 0b11000000;
     PORTB |= 0b00000011;
+    PORTB &= 0b11000011;
     _delay_ms(1);
     
     while (1) 
@@ -83,7 +84,7 @@ int check_password(void)
             // Make rows as output and columns as input
             DDRD |= 0b11000000;
             DDRB = 0b00000011;
-            _delay_ms(1);
+            //_delay_ms(1);
             
             // Power the column pins
             PORTB = 0b00111100;
@@ -257,7 +258,7 @@ int check_password(void)
             DDRD &= 0b00111111;
             DDRB &= 0b11111100;
             DDRB |= 0b00111100;
-            _delay_ms(1);
+            //_delay_ms(1);
             
             // Power the row pins
             PORTD |= 0b11000000;
