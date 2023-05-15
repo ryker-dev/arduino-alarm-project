@@ -20,7 +20,7 @@ void USART_init(unsigned int ubrr) {
 	UCSR0C = (1<<USBS0) | (3<<UCSZ00);
 }
 
-void USART_transmit(unsigned char data) {
+void USART_transmit(int data) {
 	// Wait for empty transmit buffer
 	while(!(UCSR0A & (1<<UDRE0)));
     

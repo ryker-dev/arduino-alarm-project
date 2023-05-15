@@ -19,8 +19,7 @@ int main(void) {
     
     while(1) { 
 		//check_password();
-		printf("1");
-		USART_transmit("1");
+		USART_transmit(1);
 		_delay_ms(1000);
     }
 }

@@ -49,7 +49,7 @@ int main(void)
     
     while (1) 
     {
-		state = atoi(USART_receive());
+		state = USART_receive();
 		printf(state);
         // State machine
         switch(state) {
