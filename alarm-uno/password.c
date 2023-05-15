@@ -28,7 +28,7 @@ void led_test(void){
 
 // Compare user given password with the correct password
 int compare(char *password, char *given_password, size_t n){
-	if (strncmp(password, given_password, n) != 0) {
+	if (strncmp(password, given_password, n) == 0) {
 		return 1;
 	}
 	else {
@@ -62,7 +62,6 @@ int check_password(void)
     DDRD &= 0b00111111;
     DDRB &= 0b11111100;
     DDRB |= 0b00111100;
-    //_delay_ms(1);
     
     // Power the row pins
     PORTD |= 0b11000000;
@@ -103,7 +102,7 @@ int check_password(void)
             
             if (key_pressed == 0b01110111) {
                 // Key 1 pressed
-                //printf("1");
+                printf("1");
                 given_password[idx] = '1';
                 if (password[idx] == '1') {
                 }
@@ -113,123 +112,68 @@ int check_password(void)
             }
             else if (key_pressed == 0b01111011) {
                 // Key 2 pressed
-                //printf("2");
+                printf("2");
                 given_password[idx] = '2';
-                if (password[idx] == '2') {
-                }
-                else {
-                    ;
-                }
             }
             else if (key_pressed == 0b01111101) {
                 // Key 3 pressed
-                //printf("3");
+                printf("3");
                 given_password[idx] = '3';
-                if (password[idx] == '3') {
-                }
-                else {
-                    ;
-                }
             }
             else if (key_pressed == 0b01111110) {
                 // A
-                //printf("A");
+                printf("A");
                 given_password[idx] = 'A';
-                if (password[idx] == 'A') {
-                }
-                else {
-                    ;
-                }
             }
             else if (key_pressed == 0b10110111) {
                 // 4
-                //printf("4");
+				printf("4");
                 given_password[idx] = '4';
-                if (password[idx] == '4') {
-                }
-                else {
-                    ;
-                }
             }
             else if (key_pressed == 0b10111011) {
                 // 5
-                //printf("5");
+                printf("5");
                 given_password[idx] = '5';
-                if (password[idx] == '5') {
-                }
-                else {
-                    ;
-                }
             }
             else if (key_pressed == 0b10111101) {
                 // 6
-                //printf("6");
+                printf("6");
                 given_password[idx] = '6';
-                if (password[idx] == '6') {
-                }
-                else {
-                    ;
-                }
             }
             else if (key_pressed == 0b10111110) {
                 // B
-                //printf("B");
+                printf("B");
                 given_password[idx] = 'B';
-                if (password[idx] == 'B') {
-                }
-                else {
-                    ;
-                }
             }
             else if (key_pressed == 0b11010111) {
                 // 7
-                //printf("7");
+                printf("7");
                 given_password[idx] = '7';
-                if (password[idx] == '7') {
-                }
-                else {
-                    ;
-                }
             }
             else if (key_pressed == 0b11011011) {
                 // 8
-                //printf("8");
+                printf("8");
                 given_password[idx] = '8';
-                if (password[idx] == '8') {
-                }
-                else {
-                    ;
-                }
             }
             else if (key_pressed == 0b11011101) {
                 // 9
-                //printf("9");
+                printf("9");
                 given_password[idx] = '9';
-                if (password[idx] == '9') {
-                }
-                else {
-                    ;
-                }
             }
             else if (key_pressed == 0b11011110) {
                 // C
-                //printf("C");
+				printf("C");
                 given_password[idx] = 'C';
-                if (password[idx] == 'C') {
-                }
-                else {
-                    ;
-                }
             }
             else if (key_pressed == 0b11100111) {
                 // Backspace button (*)
-                given_password[idx - 1] = 'x';
+                given_password[idx - 1] = '\0';
                 idx -= 2;
-                //printf("\n\r%s\n\r", given_password);
+                printf("\n\r%s", given_password);
             }
             else if (key_pressed == 0b11101011) {
                 // 0
-                //printf("0");
+                printf("0");
                 given_password[idx] = '0';
                 if (password[idx] == '0') {
                 }
@@ -244,7 +188,7 @@ int check_password(void)
             }
             else if (key_pressed == 0b11101110) {
                 // D
-                //printf("D");
+                printf("D");
                 given_password[idx] = 'D';
                 if (password[idx] == 'D') {
                 }
@@ -258,7 +202,6 @@ int check_password(void)
             DDRD &= 0b00111111;
             DDRB &= 0b11111100;
             DDRB |= 0b00111100;
-            //_delay_ms(1);
             
             // Power the row pins
             PORTD |= 0b11000000;

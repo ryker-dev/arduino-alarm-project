@@ -2,6 +2,8 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include "lcd.h"    // lcd header file made by Peter Fleury
 
 // States for state machine
@@ -10,7 +12,7 @@
 #define ALARM 2
 #define TRIGGERED_WRONGPASSWORD 3
 #define TRIGGERED_TOOSLOW 4
-volatile int8_t state = 0;
+volatile int8_t state = IDLE;
 
 void alarm_sound(void);
 
@@ -21,14 +23,20 @@ int main(void)
     // Set up passive buzzer ports and pins
     DDRE |= (1 << PE3); // OC3A is located in digital pin 5
     
-    // Initialize USART
-    USART_init(UBRR);
+	/* Hook URT stream to std */
+	FILE uart_output = FDEV_SETUP_STREAM(USART_transmit, NULL, _FDEV_SETUP_WRITE);
+	FILE uart_input = FDEV_SETUP_STREAM(NULL, USART_receive, _FDEV_SETUP_READ);
+	stdout = &uart_output;
+	stdin = &uart_input;
+	
+	USART_init(UBRR);
     
     // Enable interrupts
     sei();
     
     // initialize display, cursor off
     lcd_init(LCD_DISP_ON);
+	lcd_clrscr();
      
     // For alarm: set up the 16-bit timer/counter3, mode 9
     TCCR3B = 0;         // Reset timer/counter 3
@@ -49,7 +57,9 @@ int main(void)
                 lcd_puts("Alarm system on");
             
                 // Wait for data to be received
-                while (!(UCSR0A & (1<<RXC0)));
+                //while (!(UCSR0A & (1<<RXC0)));
+				state = USART_receive();
+				printf(state);
                 
                 // Read the received data into state variable
                 state = UDR0;

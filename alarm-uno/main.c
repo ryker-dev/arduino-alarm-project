@@ -15,10 +15,11 @@ int main(void) {
     
     USART_init(UBRR);
     
-    //check_password();
+    check_password();
     
     while(1) { 
-		printf("Hello World!\n\r");
+		//check_password();
+		USART_transmit(1);
 		_delay_ms(1000);
     }
 }

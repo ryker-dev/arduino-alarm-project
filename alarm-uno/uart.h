@@ -4,7 +4,7 @@
 #define UBRR FOSC/16/BAUD-1
 
 void USART_init(unsigned int ubrr);
-void USART_transmit(unsigned char data);
+void USART_transmit(int data);
 unsigned char USART_receive(void);
 
 
