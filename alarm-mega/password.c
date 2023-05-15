@@ -19,11 +19,11 @@ void led_test(void){
 }
 
 int compare(char *password, char *given_password){
-	if (strcmp(password, given_password) != 0) {
-		return 0;
+	if (strcmp(password, given_password) == 0) {
+		return 1;
 	}
 	else {
-		return 1;
+		return 0;
 	}
 }
 
