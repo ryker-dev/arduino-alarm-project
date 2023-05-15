@@ -5,7 +5,7 @@
 
 void USART_init(unsigned int ubrr);
 void USART_transmit(int data);
-//unsigned char USART_receive(void);
+unsigned char USART_receive(void);
 
 
 

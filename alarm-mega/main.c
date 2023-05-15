@@ -49,8 +49,6 @@ int main(void)
     
     while (1) 
     {
-		state = USART_receive();
-		printf(state);
         // State machine
         switch(state) {
             case IDLE:
@@ -60,6 +58,8 @@ int main(void)
             
                 // Wait for data to be received
                 //while (!(UCSR0A & (1<<RXC0)));
+				state = USART_receive();
+				printf(state);
                 
                 // Read the received data into state variable
                 state = UDR0;
