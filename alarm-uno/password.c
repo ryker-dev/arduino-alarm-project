@@ -28,7 +28,7 @@ void led_test(void){
 
 // Compare user given password with the correct password
 int compare(char *password, char *given_password, size_t n){
-	if (strncmp(password, given_password, n) != 0) {
+	if (strncmp(password, given_password, n) == 0) {
 		return 1;
 	}
 	else {
