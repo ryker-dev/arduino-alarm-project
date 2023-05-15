@@ -15,7 +15,7 @@ int main(void) {
     
     USART_init(UBRR);
     
-    //check_password();
+    check_password();
     
     while(1) { 
 		//check_password();
