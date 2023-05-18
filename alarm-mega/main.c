@@ -79,10 +79,13 @@ int main(void)
     TCCR3B |= (1 << 4); // Set register B WBM[3:2] bits
     TIMSK3 |= (1 << 1); // Enable compare match A interrupt
 	
-	char temp = UDR0;
+	//char temp = UDR0;
     while (1) 
     {
 		printf("Out of switch state: %c\n\r", state);
+        if (state == 't') {
+            printf("t");
+        }
         // State machine
         switch(state) {
             case IDLE:
@@ -90,6 +93,17 @@ int main(void)
                 lcd_clrscr();
                 lcd_puts("Alarm system on");
             
+            
+                /*if (timer_count >= TIMEOUT) { // If timer has run for 3s
+                    printf("TIME RAN OUT (IN MAIN)");
+                                
+                    printf("Inside triggered state: %c\n\r", state);
+                                
+                    // Stop timer
+                    TIMSK1 = (0 << OCIE1A);
+                    timer_count = 0;
+                }*/
+                
                 // Wait for data to be received
                 // Read the received data into state variable
 				result = USART_receive();
@@ -98,15 +112,6 @@ int main(void)
 				}
 
 				printf("Inside idle state: %c\n\r", state);
-                
-                setup_timer();
-                if (timer_count >= TIMEOUT) { // If timer has run for 3s
-                    printf("TIME RAN OUT (IN MAIN)");
-                    
-                    // Stop timer
-                    TIMSK1 = (0 << OCIE1A);
-                    timer_count = 0;
-                }
                 
                 break;
                 
@@ -136,10 +141,21 @@ int main(void)
             case TRIGGERED:
                 lcd_clrscr();
                 lcd_puts("Give password");
+                
+                setup_timer();
+                if (timer_count >= TIMEOUT) { // If timer has run for 3s
+                    printf("TIME RAN OUT (IN MAIN)");
+                                    
+                    // Stop timer
+                    TIMSK1 = (0 << OCIE1A);
+                    timer_count = 0;
+                }
                                 
-                // Wait for data to be received and read the received data
-                while (!(UCSR0A & (1<<RXC0)));
-                state = UDR0;
+                result = USART_receive();
+                if (filterResult(result) == 1) {
+                    state = result;
+                }
+                printf("Inside triggered state: %c\n\r", state);
                 break;
                 
             case ALARM_WRONGPASSWORD:
@@ -153,6 +169,7 @@ int main(void)
                 break;
                 
             case ALARM_TIMEOUT:
+                printf("ALARM!ALARM!ALARM!");
                 TIMSK1 = (0 << OCIE1A);
                 timer_count = 0;
             

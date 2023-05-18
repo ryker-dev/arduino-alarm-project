@@ -19,6 +19,8 @@ int wait_for_motion(void) {
     while (1) {
         if (PIND & (1 << PD3))
         {
+            USART_transmit(TRIGGERED);
+            USART_transmit(TRIGGERED);
             return 1;
         }
     }

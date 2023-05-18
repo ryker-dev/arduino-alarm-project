@@ -44,6 +44,7 @@ char USART_receive(void) {
             return 'o';
         }
     }
+    
 	printf("UART state: %c\n\r", UDR0);
 	char result = UDR0;
 	UCSR0A |= (1 << 0);
