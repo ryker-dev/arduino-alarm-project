@@ -6,6 +6,8 @@
 #include <avr/io.h>
 #include <util/setbaud.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 
 void USART_init(unsigned int ubrr) {
@@ -20,7 +22,7 @@ void USART_init(unsigned int ubrr) {
 	UCSR0C = (1<<USBS0) | (3<<UCSZ00);
 }
 
-void USART_transmit(int data) {
+void USART_transmit(char data) {
 	// Wait for empty transmit buffer
 	while(!(UCSR0A & (1<<UDRE0)));
     
@@ -28,14 +30,15 @@ void USART_transmit(int data) {
 	UDR0 = data;
 }
 
-unsigned char USART_receive(void) {
+char USART_receive(void) {
 	// Wait for data to be received
 	while(!(UCSR0A & (1<<RXC0)));
+	printf("UART state: %c\n\r", UDR0);
 	char result = UDR0;
 	UCSR0A |= (1 << 0);
 	//RXC0 |= (1 << 0);
 	// Get and return received data from buffer
-	return result;
+	return UDR0;
 }
 
 

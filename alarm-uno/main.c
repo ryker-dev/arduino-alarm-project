@@ -5,7 +5,7 @@
 #include "password.h"
 
 #define IDLE 0
-#define DISARMED 1
+#define DISARMED 'p'
 #define ALARM 2
 #define TRIGGERED_WRONGPASSWORD 3
 #define TRIGGERED_TOOSLOW 4
@@ -42,7 +42,7 @@ int main(void) {
         
 		printf("\n\rGive password:\n\r");
 		valid_password = check_password();
-		if (valid_password == DISARMED) {
+		if (valid_password) {
 			USART_transmit(DISARMED);
 		}
 		

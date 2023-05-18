@@ -7,12 +7,12 @@
 #include "lcd.h"    // lcd header file made by Peter Fleury
 
 // States for state machine
-#define IDLE 0
-#define DISARMED 1
+#define IDLE 'i'
+#define DISARMED 'p'
 #define ALARM 2
 #define TRIGGERED_WRONGPASSWORD 3
 #define TRIGGERED_TOOSLOW 4
-volatile int8_t state = IDLE;
+char state = IDLE;
 
 void alarm_sound(void);
 
@@ -46,9 +46,11 @@ int main(void)
     TCCR3A |= (1 << 0); // Set register A WGM[1:0] bits
     TCCR3B |= (1 << 4); // Set register B WBM[3:2] bits
     TIMSK3 |= (1 << 1); // Enable compare match A interrupt
-    
+	
+	char temp = UDR0;
     while (1) 
     {
+		printf("Out of switch state: %c\n\r", state);
         // State machine
         switch(state) {
             case IDLE:
@@ -59,10 +61,10 @@ int main(void)
                 // Wait for data to be received
                 //while (!(UCSR0A & (1<<RXC0)));
 				state = USART_receive();
-				printf(state);
+				//state = UDR0;
+				printf("Inside idle state: %c\n\r", state);
                 
                 // Read the received data into state variable
-                state = UDR0;
                 break;
                 
             case DISARMED:
