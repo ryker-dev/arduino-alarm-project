@@ -5,8 +5,7 @@
 #include "password.h"
 
 // Wait for the sensor to detect motion
-int motionDetection(void)
-{
+int motionDetection(void) {
     // Set the motion sensor pin (Uno digital pin 3) as an input
     DDRD |= (0 << DDD3);
     
