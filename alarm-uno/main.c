@@ -10,6 +10,20 @@
 #define TRIGGERED_WRONGPASSWORD 3
 #define TRIGGERED_TOOSLOW 4
 
+// Wait for the sensor to detect motion
+int motionDetection(void) {
+    // Set the motion sensor pin (Uno digital pin 3) as an input
+    DDRD |= (0 << DDD3);
+    
+    // Wait until motion is detected and return 1
+    while (1) {
+        if (PIND & (1 << PD3))
+        {
+            return 1;
+        }
+    }
+}
+
 int main(void) {
     //char input;
 	
@@ -21,8 +35,11 @@ int main(void) {
     
     USART_init(UBRR);
     
+    motionDetection();
+    
     int valid_password = 0;
     while(1) { 
+        
 		printf("\n\rGive password:\n\r");
 		valid_password = check_password();
 		if (valid_password == DISARMED) {
