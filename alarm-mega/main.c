@@ -12,7 +12,7 @@
 #define ALARM 2
 #define TRIGGERED_WRONGPASSWORD 3
 #define TRIGGERED_TOOSLOW 4
-volatile int8_t state = IDLE;
+unsigned int state = IDLE;
 
 void alarm_sound(void);
 
@@ -59,7 +59,7 @@ int main(void)
                 // Wait for data to be received
                 //while (!(UCSR0A & (1<<RXC0)));
 				state = USART_receive();
-				printf(state);
+				printf("%d", state);
                 
                 // Read the received data into state variable
                 state = UDR0;

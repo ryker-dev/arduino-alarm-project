@@ -43,7 +43,7 @@ int main(void) {
 		printf("\n\rGive password:\n\r");
 		valid_password = check_password();
 		if (valid_password == DISARMED) {
-			USART_transmit(DISARMED);
+			USART_transmit('p');
 		}
 		
 		_delay_ms(1000);
