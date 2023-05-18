@@ -9,24 +9,51 @@
 // States for state machine
 #define IDLE 'i'
 #define DISARMED 'p'
-#define ALARM 2
-#define TRIGGERED_WRONGPASSWORD 3
-#define TRIGGERED_TOOSLOW 4
+#define TRIGGERED 't'
+#define ALARM_WRONGPASSWORD 'w'
+#define ALARM_TIMEOUT 'o'
 char state = IDLE;
+
+//volatile unsigned long timerCount = 0;
+//const unsigned long timerInterval = 3000;  // Timer interval in milliseconds
+uint8_t timerCount = 0;    // Counts timer interrupts
 
 void alarm_sound(void);
 
 char display_buffer[16];
 
+void setupTimer()
+{
+    // Set up Timer1
+    TCCR1A = 0;     // Configure Timer1 control registers
+    TCNT1 = 0;      // Initialize counter value
+
+      TCCR1B = (1 << WGM12);       // from the datasheet
+      OCR1A = 19531;               // Set the number of ticks to the length of one second
+      
+      TIMSK1 = (1 << OCIE1A);      // from the data sheet
+      TCCR1B |= (1 << CS12) | (1 << CS10);
+}
+
+// Timer1 compare match interrupt service routine
+ISR(TIMER1_COMPA_vect)
+{
+    timerCount++;  // Increment the timer count
+}
+
+
 int filterResult(char ret) {
-	if (ret == IDLE || ret == DISARMED || ret == ALARM || ret == TRIGGERED_TOOSLOW || ret == TRIGGERED_WRONGPASSWORD) {
+	if (ret == IDLE || ret == DISARMED || ret == TRIGGERED || ret == ALARM_TIMEOUT || ret == ALARM_WRONGPASSWORD) {
 		return 1;
 	}
 	return 0;
 }
 
+
 int main(void)
 {   
+    char result;
+    
     // Set up passive buzzer ports and pins
     DDRE |= (1 << PE3); // OC3A is located in digital pin 5
     
@@ -67,12 +94,17 @@ int main(void)
             
                 // Wait for data to be received
                 //while (!(UCSR0A & (1<<RXC0)));
-				char result = USART_receive();
+				result = USART_receive();
 				if (filterResult(result) == 1) {
 					state = result;
 				}
 				//state = UDR0;
 				printf("Inside idle state: %c\n\r", state);
+                
+                setupTimer();
+                if (timerCount >= 3) { // If timer has run for 3s
+                    printf("TIME RAN OUT (IN MAIN)");
+                }
                 
                 // Read the received data into state variable
                 break;
@@ -82,13 +114,22 @@ int main(void)
                 lcd_puts("Disarmed");
                 _delay_ms(10);
                 
+                
                 // Wait for data to be received and read the received data
                 // TODO: should it only be possible to change the state to idle from here? 
-                while (!(UCSR0A & (1<<RXC0)));
-                state = UDR0;
+                /*while (!(UCSR0A & (1<<RXC0)));
+                state = UDR0;*/
+                
+                result = USART_receive();
+                if (filterResult(result) == 1) {
+                    state = result;
+                }
+                //state = UDR0;
+                printf("Inside disarmed state: %c\n\r", state);
+                
                 break;
                 
-            case ALARM:
+            case TRIGGERED:
                 lcd_clrscr();
                 lcd_puts("Give password");
                                 
@@ -97,14 +138,14 @@ int main(void)
                 state = UDR0;
                 break;
                 
-            case TRIGGERED_WRONGPASSWORD:
+            case ALARM_WRONGPASSWORD:
                 lcd_clrscr();
                 lcd_puts("Wrong password");
                 _delay_ms(2000);
                 alarm_sound();                        
                 break;
                 
-            case TRIGGERED_TOOSLOW:
+            case ALARM_TIMEOUT:
                 lcd_clrscr();
                 lcd_puts("Time ran up");
                 _delay_ms(2000);
@@ -112,7 +153,7 @@ int main(void)
                 break;
                 
             default:
-                state = IDLE;
+                //state = IDLE;
                 break;
         }
     }

@@ -4,11 +4,11 @@
 #include <util/delay.h>
 #include "password.h"
 
-#define IDLE 0
+#define IDLE 'i'
 #define DISARMED 'p'
-#define ALARM 2
-#define TRIGGERED_WRONGPASSWORD 3
-#define TRIGGERED_TOOSLOW 4
+#define TRIGGERED 't'
+#define ALARM_WRONGPASSWORD 'w'
+#define ALARM_TIMEOUT 'o'
 
 // Wait for the sensor to detect motion
 int motionDetection(void) {
