@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-extern uint8_t timerCount;
+extern uint8_t timer_count;
 
 void USART_init(unsigned int ubrr) {
 	// Set baud rate
@@ -35,12 +35,13 @@ char USART_receive(void) {
     
 	// Wait for data to be received
 	while(!(UCSR0A & (1<<RXC0))) {
-        if (timerCount >= TIMEOUT) { // If timer has run for 3s
+        if (timer_count >= TIMEOUT) {   // Timer has run for more than 30s
             printf("TIME RAN OUT (IN UART)");
             
             // Stop timer
             TIMSK1 = (0 << OCIE1A);
-            timerCount = 0;
+            timer_count = 0;
+            return 'o';
         }
     }
 	printf("UART state: %c\n\r", UDR0);

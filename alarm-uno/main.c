@@ -11,7 +11,7 @@
 #define ALARM_TIMEOUT 'o'
 
 // Wait for the sensor to detect motion
-int motionDetection(void) {
+int wait_for_motion(void) {
     // Set the motion sensor pin (Uno digital pin 3) as an input
     DDRD |= (0 << DDD3);
     
@@ -35,7 +35,7 @@ int main(void) {
     
     USART_init(UBRR);
     
-    motionDetection();
+    wait_for_motion();
     
     int valid_password = 0;
     while(1) { 
@@ -44,6 +44,7 @@ int main(void) {
 		valid_password = check_password();
 		if (valid_password) {
 			USART_transmit(DISARMED);
+            USART_transmit(DISARMED);
 		}
 		
 		_delay_ms(1000);

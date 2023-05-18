@@ -14,32 +14,29 @@
 #define ALARM_TIMEOUT 'o'
 char state = IDLE;
 
-//volatile unsigned long timerCount = 0;
-//const unsigned long timerInterval = 3000;  // Timer interval in milliseconds
-uint8_t timerCount = 0;    // Counts timer interrupts
-
+uint8_t timer_count = 0;    // Counts timer interrupts
 
 void alarm_sound(void);
 
 char display_buffer[16];
 
-void setupTimer()
+void setup_timer()
 {
     // Set up Timer1
     TCCR1A = 0;     // Configure Timer1 control registers
     TCNT1 = 0;      // Initialize counter value
 
-      TCCR1B = (1 << WGM12);       // from the datasheet
-      OCR1A = 19531;               // Set the number of ticks to the length of one second
+    TCCR1B = (1 << WGM12);       // from the datasheet
+    OCR1A = 19531;               // Set the number of ticks to the length of one second
       
-      TIMSK1 = (1 << OCIE1A);      // from the data sheet
-      TCCR1B |= (1 << CS12) | (1 << CS10);
+    TIMSK1 = (1 << OCIE1A);      // from the data sheet
+    TCCR1B |= (1 << CS12) | (1 << CS10);
 }
 
 // Timer1 compare match interrupt service routine
 ISR(TIMER1_COMPA_vect)
 {
-    timerCount++;  // Increment the timer count
+    timer_count++;  // Increment the timer count
 }
 
 
@@ -94,27 +91,29 @@ int main(void)
                 lcd_puts("Alarm system on");
             
                 // Wait for data to be received
-                //while (!(UCSR0A & (1<<RXC0)));
+                // Read the received data into state variable
 				result = USART_receive();
 				if (filterResult(result) == 1) {
 					state = result;
 				}
-				//state = UDR0;
+
 				printf("Inside idle state: %c\n\r", state);
                 
-                setupTimer();
-                if (timerCount >= TIMEOUT) { // If timer has run for 3s
+                setup_timer();
+                if (timer_count >= TIMEOUT) { // If timer has run for 3s
                     printf("TIME RAN OUT (IN MAIN)");
                     
                     // Stop timer
                     TIMSK1 = (0 << OCIE1A);
-                    timerCount = 0;
+                    timer_count = 0;
                 }
                 
-                // Read the received data into state variable
                 break;
                 
             case DISARMED:
+                TIMSK1 = (0 << OCIE1A);
+                timer_count = 0;
+                
                 lcd_clrscr();
                 lcd_puts("Disarmed");
                 _delay_ms(10);
@@ -144,6 +143,9 @@ int main(void)
                 break;
                 
             case ALARM_WRONGPASSWORD:
+                TIMSK1 = (0 << OCIE1A);
+                timer_count = 0;
+            
                 lcd_clrscr();
                 lcd_puts("Wrong password");
                 _delay_ms(2000);
@@ -151,6 +153,9 @@ int main(void)
                 break;
                 
             case ALARM_TIMEOUT:
+                TIMSK1 = (0 << OCIE1A);
+                timer_count = 0;
+            
                 lcd_clrscr();
                 lcd_puts("Time ran up");
                 _delay_ms(2000);
