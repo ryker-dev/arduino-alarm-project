@@ -170,7 +170,9 @@ int check_password(void)
             else if (key_pressed == 0b11100111) {
                 // Backspace button (*)
                 given_password[idx - 1] = '\0';
-                idx -= 1;
+                if (idx > 0) {
+                    idx -= 1;
+                }
                 printf("\n\r%s", given_password);
 				continue;
             }
