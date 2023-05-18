@@ -40,7 +40,7 @@ int main(void) {
     int valid_password = 0;
     while(1) { 
         
-		printf("\n\rGive password:\n\r");
+		//printf("\n\rGive password:\n\r");
 		valid_password = check_password();
 		if (valid_password) {
 			USART_transmit(DISARMED);

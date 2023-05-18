@@ -38,7 +38,7 @@ char USART_receive(void) {
 	UCSR0A |= (1 << 0);
 	//RXC0 |= (1 << 0);
 	// Get and return received data from buffer
-	return UDR0;
+	return result;
 }
 
 

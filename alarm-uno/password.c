@@ -193,6 +193,7 @@ int check_password(void)
                 // #
                 int pw_validity = compare(password, given_password);
                 //printf("\n\rpw_validity %d\n\r", pw_validity);
+                printf("\n\r");
 				idx = 0;
 				return pw_validity;
             }

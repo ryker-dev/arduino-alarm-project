@@ -18,6 +18,13 @@ void alarm_sound(void);
 
 char display_buffer[16];
 
+int filterResult(char ret) {
+	if (ret == IDLE || ret == DISARMED || ret == ALARM || ret == TRIGGERED_TOOSLOW || ret == TRIGGERED_WRONGPASSWORD) {
+		return 1;
+	}
+	return 0;
+}
+
 int main(void)
 {   
     // Set up passive buzzer ports and pins
@@ -60,7 +67,10 @@ int main(void)
             
                 // Wait for data to be received
                 //while (!(UCSR0A & (1<<RXC0)));
-				state = USART_receive();
+				char result = USART_receive();
+				if (filterResult(result) == 1) {
+					state = result;
+				}
 				//state = UDR0;
 				printf("Inside idle state: %c\n\r", state);
                 
