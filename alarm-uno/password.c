@@ -17,25 +17,17 @@
 #define BITMASK_D 0b11000000
 #define BITMASK_B 0b00111111
 
-void led_test(void){
-    PORTD &= ~(1 << PD3);
-    _delay_ms(1000);
-    PORTD |= (1 << PD3);
-    _delay_ms(1000);
-    PORTD &= ~(1 << PD3);
-    _delay_ms(1000);
-}
-
 // Compare user given password with the correct password
-int compare(char *password, char *given_password){
-	//printf("%s", given_password);
-	//printf("%s", password);
-	if (strncmp(password, given_password, 4) == 0) {
-		return 1;
-	}
-	else {
-		return 0;
-	}
+int compare(char *password, char *given_password, size_t n){
+    if (n != strlen(password)) {
+        return 0;
+    }
+    else if (strncmp(password, given_password, n) == 0) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
 }
 
 int check_password(void)
@@ -191,7 +183,7 @@ int check_password(void)
             }
             else if (key_pressed == 0b11101101) {
                 // #
-                int pw_validity = compare(password, given_password);
+                int pw_validity = compare(password, given_password, idx);
                 //printf("\n\rpw_validity %d\n\r", pw_validity);
                 printf("\n\r");
 				idx = 0;

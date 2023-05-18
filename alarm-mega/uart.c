@@ -11,7 +11,6 @@
 
 extern uint8_t timerCount;
 
-
 void USART_init(unsigned int ubrr) {
 	// Set baud rate
 	UBRR0H = (unsigned char) (ubrr>>8);
@@ -36,7 +35,7 @@ char USART_receive(void) {
     
 	// Wait for data to be received
 	while(!(UCSR0A & (1<<RXC0))) {
-        if (timerCount >= 3) { // If timer has run for 3s
+        if (timerCount >= TIMEOUT) { // If timer has run for 3s
             printf("TIME RAN OUT (IN UART)");
             
             // Stop timer

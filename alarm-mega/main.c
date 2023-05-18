@@ -18,6 +18,7 @@ char state = IDLE;
 //const unsigned long timerInterval = 3000;  // Timer interval in milliseconds
 uint8_t timerCount = 0;    // Counts timer interrupts
 
+
 void alarm_sound(void);
 
 char display_buffer[16];
@@ -102,7 +103,7 @@ int main(void)
 				printf("Inside idle state: %c\n\r", state);
                 
                 setupTimer();
-                if (timerCount >= 3) { // If timer has run for 3s
+                if (timerCount >= TIMEOUT) { // If timer has run for 3s
                     printf("TIME RAN OUT (IN MAIN)");
                     
                     // Stop timer
