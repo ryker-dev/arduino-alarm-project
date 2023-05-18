@@ -52,6 +52,7 @@ int check_password(void)
     /******************************************************/
     
     char *password = "0123";
+    //char *given_password = "xxxxxxxxxxxx";  // For backspace testing, remove later
     char given_password[30];
     int idx = 0;
     
@@ -177,7 +178,9 @@ int check_password(void)
             else if (key_pressed == 0b11100111) {
                 // Backspace button (*)
                 given_password[idx - 1] = '\0';
-                idx -= 2;
+                idx -= 1;
+                printf("\n\r%s", given_password);
+                printf("\n\r Idx %d\n\r", idx);
 				continue;
             }
             else if (key_pressed == 0b11101011) {
@@ -214,7 +217,7 @@ int check_password(void)
             _delay_ms(1);
 
             key_pressed = 0;
-			_delay_ms(500); // Delay to avoid one key press to be interpreted as two
+			_delay_ms(200); // Delay to avoid one key press to be interpreted as two
         }
     }
 }
