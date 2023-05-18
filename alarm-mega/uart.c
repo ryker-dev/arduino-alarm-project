@@ -33,12 +33,12 @@ void USART_transmit(char data) {
 char USART_receive(void) {
 	// Wait for data to be received
 	while(!(UCSR0A & (1<<RXC0)));
-	printf("%c\n\r", UDR0);
-	char result = atoi(UDR0);
+	printf("UART state: %c\n\r", UDR0);
+	char result = UDR0;
 	UCSR0A |= (1 << 0);
 	//RXC0 |= (1 << 0);
 	// Get and return received data from buffer
-	return result;
+	return UDR0;
 }
 
 
