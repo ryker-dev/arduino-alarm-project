@@ -38,6 +38,10 @@ char USART_receive(void) {
 	while(!(UCSR0A & (1<<RXC0))) {
         if (timerCount >= 3) { // If timer has run for 3s
             printf("TIME RAN OUT (IN UART)");
+            
+            // Stop timer
+            TIMSK1 = (0 << OCIE1A);
+            timerCount = 0;
         }
     }
 	printf("UART state: %c\n\r", UDR0);

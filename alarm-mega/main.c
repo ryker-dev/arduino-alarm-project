@@ -104,6 +104,10 @@ int main(void)
                 setupTimer();
                 if (timerCount >= 3) { // If timer has run for 3s
                     printf("TIME RAN OUT (IN MAIN)");
+                    
+                    // Stop timer
+                    TIMSK1 = (0 << OCIE1A);
+                    timerCount = 0;
                 }
                 
                 // Read the received data into state variable
