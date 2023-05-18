@@ -172,7 +172,6 @@ int check_password(void)
                 given_password[idx - 1] = '\0';
                 idx -= 1;
                 printf("\n\r%s", given_password);
-                //printf("\n\r Idx %d\n\r", idx);
 				continue;
             }
             else if (key_pressed == 0b11101011) {
@@ -182,7 +181,7 @@ int check_password(void)
 				idx +=1;
             }
             else if (key_pressed == 0b11101101) {
-                // #
+                // Submit password button (#)
                 int pw_validity = compare(password, given_password, idx);
                 //printf("\n\rpw_validity %d\n\r", pw_validity);
                 printf("\n\r");

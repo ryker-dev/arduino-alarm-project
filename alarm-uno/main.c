@@ -47,7 +47,11 @@ int main(void) {
 		if (valid_password) {
 			USART_transmit(DISARMED);
             USART_transmit(DISARMED);
-		}
+		} 
+        else {
+			USART_transmit(ALARM_WRONGPASSWORD);
+			USART_transmit(ALARM_WRONGPASSWORD);
+        }            
 		
 		_delay_ms(1000);
     }

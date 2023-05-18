@@ -92,27 +92,14 @@ int main(void)
                 // Clear display and print string
                 lcd_clrscr();
                 lcd_puts("Alarm system on");
-            
-            
-                /*if (timer_count >= TIMEOUT) { // If timer has run for 3s
-                    printf("TIME RAN OUT (IN MAIN)");
-                                
-                    printf("Inside triggered state: %c\n\r", state);
-                                
-                    // Stop timer
-                    TIMSK1 = (0 << OCIE1A);
-                    timer_count = 0;
-                }*/
                 
                 // Wait for data to be received
-                // Read the received data into state variable
 				result = USART_receive();
 				if (filterResult(result) == 1) {
-					state = result;
+					state = result;     //Read the received data into state variable
 				}
 
-				printf("Inside idle state: %c\n\r", state);
-                
+				printf("Inside idle state: %c\n\r", state);  
                 break;
                 
             case DISARMED:
@@ -126,8 +113,6 @@ int main(void)
                 
                 // Wait for data to be received and read the received data
                 // TODO: should it only be possible to change the state to idle from here? 
-                /*while (!(UCSR0A & (1<<RXC0)));
-                state = UDR0;*/
                 
                 result = USART_receive();
                 if (filterResult(result) == 1) {
