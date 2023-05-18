@@ -28,8 +28,8 @@ void led_test(void){
 
 // Compare user given password with the correct password
 int compare(char *password, char *given_password){
-	printf("%c", given_password);
-	printf("%s", password);
+	//printf("%s", given_password);
+	//printf("%s", password);
 	if (strncmp(password, given_password, 4) == 0) {
 		return 1;
 	}
@@ -53,8 +53,6 @@ int check_password(void)
     
     char *password = "0123";
     char given_password[30];
-	char *pass_start = &given_password;
-	memset(given_password,0,30);
     int idx = 0;
     
     uint8_t key_pressed = 0;
@@ -91,7 +89,7 @@ int check_password(void)
 		PORTD &= 0b00111111;
 		_delay_ms(1);
         
-        if (keypad_vals != 0b00001111) {     // If any of the row pins goes low // This bit doesn't work on second try
+        if (keypad_vals != 0b00001111) {     // If any of the row pins goes low // This bit doesn't seem to work reliably
             key_pressed = keypad_vals;
             
             // Read column values into variable keypad_vals
@@ -107,89 +105,99 @@ int check_password(void)
             if (key_pressed == 0b01110111) {
                 // Key 1 pressed
                 given_password[idx] = '1';
-				printf(&given_password[idx]);
+				printf("1");
+				idx +=1;
             }
             else if (key_pressed == 0b01111011) {
                 // Key 2 pressed
                 given_password[idx] = '2';
-				printf(&given_password[idx]);
+				printf("2");
+				idx +=1;
             }
             else if (key_pressed == 0b01111101) {
                 // Key 3 pressed
                 given_password[idx] = '3';
-				printf(&given_password[idx]);
+				printf("3");
+				idx +=1;
             }
             else if (key_pressed == 0b01111110) {
                 // A
                 given_password[idx] = 'A';
-				printf(&given_password[idx]);
+				printf("A");
+				idx +=1;
             }
             else if (key_pressed == 0b10110111) {
                 // 4
                 given_password[idx] = '4';
-				printf(&given_password[idx]);
+				printf("4");
+				idx +=1;
             }
             else if (key_pressed == 0b10111011) {
                 // 5
                 given_password[idx] = '5';
-				printf(&given_password[idx]);
+				printf("5");
+				idx +=1;
             }
             else if (key_pressed == 0b10111101) {
                 // 6
                 given_password[idx] = '6';
-				printf(&given_password[idx]);
+				printf("6");
+				idx +=1;
             }
             else if (key_pressed == 0b10111110) {
                 // B
                 given_password[idx] = 'B';
-				printf(&given_password[idx]);
+				printf("B");
+				idx +=1;
             }
             else if (key_pressed == 0b11010111) {
                 // 7
                 given_password[idx] = '7';
-				printf(&given_password[idx]);
+				printf("7");
+				idx +=1;
             }
             else if (key_pressed == 0b11011011) {
                 // 8
                 given_password[idx] = '8';
-				printf(&given_password[idx]);
+				printf("8");
+				idx +=1;
             }
             else if (key_pressed == 0b11011101) {
                 // 9
                 given_password[idx] = '9';
-				printf(&given_password[idx]);
+				printf("9");
+				idx +=1;
             }
             else if (key_pressed == 0b11011110) {
                 // C
                 given_password[idx] = 'C';
-				printf(&given_password[idx]);
+				printf("C");
+				idx +=1;
             }
             else if (key_pressed == 0b11100111) {
                 // Backspace button (*)
                 given_password[idx - 1] = '\0';
                 idx -= 2;
-                printf("\n\r");
-				printf(given_password);
 				continue;
             }
             else if (key_pressed == 0b11101011) {
                 // 0
+				printf("0");
                 given_password[idx] = '0';
-				printf(&given_password[idx]);
+				idx +=1;
             }
             else if (key_pressed == 0b11101101) {
                 // #
-				//printf("%c", given_password);
                 int pw_validity = compare(password, given_password);
                 printf("\n\rpw_validity %d\n\r", pw_validity);
 				idx = 0;
 				return pw_validity;
-				//given_password[0] = '\0';
             }
             else if (key_pressed == 0b11101110) {
                 // D
                 given_password[idx] = 'D';
-				printf(&given_password[idx]);
+				printf("D");
+				idx +=1;
             }
             
             /* Initialization for new iteration of while loop */
@@ -206,7 +214,6 @@ int check_password(void)
             _delay_ms(1);
 
             key_pressed = 0;
-            idx +=1;
 			_delay_ms(500); // Delay to avoid one key press to be interpreted as two
         }
     }

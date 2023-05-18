@@ -25,7 +25,6 @@ int main(void) {
     while(1) { 
 		printf("\n\rGive password:\n\r");
 		valid_password = check_password();
-		printf("%d", valid_password);
 		if (valid_password == DISARMED) {
 			USART_transmit(DISARMED);
 		}
