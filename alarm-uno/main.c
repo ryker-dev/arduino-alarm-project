@@ -3,7 +3,13 @@
 #include <stdio.h>
 #include <util/delay.h>
 #include "password.h"
-    
+
+#define IDLE 0
+#define DISARMED 1
+#define ALARM 2
+#define TRIGGERED_WRONGPASSWORD 3
+#define TRIGGERED_TOOSLOW 4
+
 int main(void) {
     //char input;
 	
@@ -15,11 +21,15 @@ int main(void) {
     
     USART_init(UBRR);
     
-    check_password();
-    
+    int valid_password = 0;
     while(1) { 
-		//check_password();
-		USART_transmit(1);
+		printf("\n\rGive password:\n\r");
+		valid_password = check_password();
+		printf("%d", valid_password);
+		if (valid_password == DISARMED) {
+			USART_transmit(DISARMED);
+		}
+		
 		_delay_ms(1000);
     }
 }

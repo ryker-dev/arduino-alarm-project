@@ -131,12 +131,6 @@
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="password.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="password.h">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="uart.c">
       <SubType>compile</SubType>
     </Compile>
