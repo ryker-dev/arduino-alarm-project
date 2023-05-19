@@ -27,7 +27,7 @@ void setup_timer()
     TCNT1 = 0;      // Initialize counter value
 
     TCCR1B = (1 << WGM12);       // from the datasheet
-    OCR1A = 19531;               // Set the number of ticks to the length of one second
+    OCR1A = 15625;               // Set the number of ticks to the length of one second
       
     TIMSK1 = (1 << OCIE1A);      // from the data sheet
     TCCR1B |= (1 << CS12) | (1 << CS10);
