@@ -36,7 +36,7 @@ int main(void) {
     stdin = &uart_input;
     
     USART_init(UBRR);
-    
+    printf("\n\n\r");
     wait_for_motion();
     
     int valid_password = 0;
@@ -51,7 +51,7 @@ int main(void) {
         else {
 			USART_transmit(ALARM_WRONGPASSWORD);
 			USART_transmit(ALARM_WRONGPASSWORD);
-        }            
+        }           
 		
 		_delay_ms(1000);
     }

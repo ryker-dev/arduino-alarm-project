@@ -36,7 +36,7 @@ char USART_receive(void) {
 	// Wait for data to be received
 	while(!(UCSR0A & (1<<RXC0))) {
         if (timer_count >= TIMEOUT) {   // Timer has run for more than 30s
-            printf("TIME RAN OUT (IN UART)");
+            //printf("TIME RAN OUT (IN UART)");
             
             // Stop timer
             TIMSK1 = (0 << OCIE1A);
@@ -45,7 +45,7 @@ char USART_receive(void) {
         }
     }
     
-	printf("UART state: %c\n\r", UDR0);
+	//printf("UART state: %c\n\r", UDR0);
 	char result = UDR0;
 	UCSR0A |= (1 << 0);
 	//RXC0 |= (1 << 0);

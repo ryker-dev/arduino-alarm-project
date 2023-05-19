@@ -82,7 +82,7 @@ int main(void)
 	//char temp = UDR0;
     while (1) 
     {
-		printf("Out of switch state: %c\n\r", state);
+		//printf("Out of switch state: %c\n\r", state);
         if (state == 't') {
             printf("t");
         }
@@ -99,7 +99,7 @@ int main(void)
 					state = result;     //Read the received data into state variable
 				}
 
-				printf("Inside idle state: %c\n\r", state);  
+				//printf("Inside idle state: %c\n\r", state);  
                 break;
                 
             case DISARMED:
@@ -119,7 +119,7 @@ int main(void)
                     state = result;
                 }
                 //state = UDR0;
-                printf("Inside disarmed state: %c\n\r", state);
+                //printf("Inside disarmed state: %c\n\r", state);
                 
                 break;
                 
@@ -129,7 +129,7 @@ int main(void)
                 
                 setup_timer();
                 if (timer_count >= TIMEOUT) { // If timer has run for 3s
-                    printf("TIME RAN OUT (IN MAIN)");
+                    printf("TIME RAN OUT");
                                     
                     // Stop timer
                     TIMSK1 = (0 << OCIE1A);
@@ -140,7 +140,7 @@ int main(void)
                 if (filterResult(result) == 1) {
                     state = result;
                 }
-                printf("Inside triggered state: %c\n\r", state);
+                //printf("Inside triggered state: %c\n\r", state);
                 break;
                 
             case ALARM_WRONGPASSWORD:
@@ -149,7 +149,7 @@ int main(void)
             
                 lcd_clrscr();
                 lcd_puts("Wrong password");
-                _delay_ms(2000);
+                _delay_ms(6000);
                 alarm_sound();                        
                 break;
                 
