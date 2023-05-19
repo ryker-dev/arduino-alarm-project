@@ -1,7 +1,3 @@
-/*
- * UART communication between UNO and computer
- */ 
-
 #include "uart.h"
 #include <avr/io.h>
 #include <util/setbaud.h>
@@ -20,7 +16,7 @@ void USART_init(unsigned int ubrr) {
 	UCSR0C = (1<<USBS0) | (3<<UCSZ00);
 }
 
-void USART_transmit(unsigned char data) {
+void USART_transmit(char data) {
 	// Wait for empty transmit buffer
 	while(!(UCSR0A & (1<<UDRE0)));
     
@@ -28,7 +24,7 @@ void USART_transmit(unsigned char data) {
 	UDR0 = data;
 }
 
-unsigned char USART_receive(void) {
+char USART_receive(void) {
 	// Wait for data to be received
 	while(!(UCSR0A & (1<<RXC0)));
 	

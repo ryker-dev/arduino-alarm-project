@@ -1,7 +1,13 @@
 /*
- * Source of inspiration:
+ * KeypadTest.c
+ *
+ * Created: 1.4.2023 18.34.49
+ * Author : ainoal
+ *
  * https://circuitdigest.com/microcontroller-projects/keypad-interfacing-with-avr-atmega32
  */ 
+
+/*  */
 
 #include "uart.h"
 #include <avr/io.h>
@@ -9,25 +15,10 @@
 #include <stdio.h>
 #include <string.h>
 
-void led_test(void){
-    PORTB &= ~(1 << PB0);
-    _delay_ms(1000);
-    PORTB |= (1 << PB0);
-    _delay_ms(1000);
-    PORTB &= ~(1 << PB0);
-    _delay_ms(1000);
-}
+void led_test();
+int compare(char *password, char *given_password);
 
-int compare(char *password, char *given_password){
-	if (strcmp(password, given_password) != 0) {
-		return 0;
-	}
-	else {
-		return 1;
-	}
-}
-
-int check_password(void)
+int main(void)
 {
     /********************testing****************************/
     DDRB |= (1 << PB0);
@@ -45,8 +36,8 @@ int check_password(void)
     stdin = &uart_input;*/
     /******************************************************/
     
-    char *password = "0123";
-    char *given_password = "xxxx";
+    char* password = "0123";
+    char* given_password = "xxxx";
     int idx = 0;
     
     // Set digital pins 0-3 (rows) as output and 4-7 (columns) as input
@@ -64,14 +55,15 @@ int check_password(void)
             key_pressed = PIND;
             _delay_ms(10);
             DDRD ^= 0b11111111;      // Make rows as inputs and columns as outputs
-            _delay_ms(10);
+            _delay_ms(1);
              PORTD ^= 0b11111111;        // Power the columns
-            _delay_ms(10);
+            _delay_ms(100);
             
             key_pressed |= PIND;    // The variable has now both row and column values as 0, others as 1
             
             if (key_pressed == 0b01110111) {
                 // Key 1 pressed
+                //printf("1");
                 given_password[idx] = '1';
                 if (password[idx] == '1') {
                     led_test();
@@ -156,6 +148,7 @@ int check_password(void)
             }
             else if (key_pressed == 0b11100111) {
                 // *
+                // TODO: make this the backspace button
                 given_password[idx] = '*';
                 if (password[idx] == '*') {
                     led_test();
@@ -194,8 +187,37 @@ int check_password(void)
             _delay_ms(1);
             PORTD ^= 0b11111111;
             key_pressed = 0;
-            idx +=1;              
-            _delay_ms(100);
+            idx +=1;
+            //printf("%i \n", idx);
+            _delay_ms(10);
         }
     }
+}
+
+int compare(char *password, char *given_password){
+    //printf("%s", given_password);
+    if (strcmp(password, given_password) != 0) {
+        // Wrong password
+        led_test();
+        led_test();
+        led_test();
+        led_test();
+        led_test();
+        led_test();
+        led_test();
+    } 
+    else {
+        // Correct password
+        led_test();
+    }
+    return 0;
+}
+
+void led_test(){
+    PORTB &= ~(1 << PB0);
+    _delay_ms(1000);
+    PORTB |= (1 << PB0);
+    _delay_ms(1000);
+    PORTB &= ~(1 << PB0);
+    _delay_ms(1000);
 }
