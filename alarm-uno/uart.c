@@ -1,7 +1,3 @@
-/*
- * UART communication between UNO and computer
- */ 
-
 #include "uart.h"
 #include <avr/io.h>
 #include <util/setbaud.h>
